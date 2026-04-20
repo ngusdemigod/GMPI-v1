@@ -1,0 +1,45 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+src/cache/
+*.cache
+
+# Logs
+*.log
+logs/
+
+# Uploads
+uploads/
+src/uploads/
+
+# Composer
+vendor/
+
+# Node modules
+node_modules/
+
+# Build
+dist/
+build/
+
+# Database backups
+*.sql.backup
+*.bak
+
+# Temporary files
+tmp/
+temp/
