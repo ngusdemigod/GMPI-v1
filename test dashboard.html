@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Bright Light Ministry Int'l — Financial Partnership</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#FAF6EF',
+          ink: '#0F1B2D',
+          gold: '#C9A24B',
+          goldsoft: '#E7D9B4',
+          deep: '#122137',
+          sage: '#5B7B6A',
+        },
+        fontFamily: {
+          serif: ['"Fraunces"', 'ui-serif', 'Georgia', 'serif'],
+          sans: ['"Inter"', 'ui-sans-serif', 'system-ui'],
+        }
+      }
+    }
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', sans-serif; background: #FAF6EF; color: #0F1B2D; }
+  .font-serif { font-family: 'Fraunces', serif; }
+  .grain {
+    background-image:
+      radial-gradient(rgba(201,162,75,0.08) 1px, transparent 1px),
+      radial-gradient(rgba(15,27,45,0.05) 1px, transparent 1px);
+    background-size: 24px 24px, 48px 48px;
+    background-position: 0 0, 12px 12px;
+  }
+  .hero-gradient {
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(201,162,75,0.25), transparent 55%),
+      radial-gradient(ellipse at 0% 100%, rgba(91,123,106,0.28), transparent 55%),
+      linear-gradient(135deg, #122137 0%, #0F1B2D 60%, #081220 100%);
+  }
+  .shine {
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shine 6s linear infinite;
+  }
+  @keyframes shine {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #C9A24B, #E7D9B4);
+  }
+  .tab-active { background: #0F1B2D; color: #FAF6EF; }
+  .tab-inactive { color: #0F1B2D; }
+  .chip:hover { transform: translateY(-2px); transition: transform .2s ease; }
+  .amount-btn.active {
+    background: #0F1B2D;
+    color: #FAF6EF;
+    border-color: #0F1B2D;
+  }
+  .divider-ornate {
+    display: flex; align-items: center; gap: 12px; color: #C9A24B;
+  }
+  .divider-ornate::before, .divider-ornate::after {
+    content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #C9A24B, transparent);
+  }
+  .scroll-hide::-webkit-scrollbar { display: none; }
+  .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 999px; background: #5B7B6A;
+    box-shadow: 0 0 0 0 rgba(91,123,106,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(91,123,106,0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(91,123,106,0); }
+    100% { box-shadow: 0 0 0 0 rgba(91,123,106,0); }
+  }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-40 backdrop-blur bg-cream/80 border-b border-ink/10">
+  <div class="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-deep flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M6 8h12"/></svg>
+      </div>
+      <div>
+        <p class="font-serif text-lg leading-none">Bright Light Ministry Int'l</p>
+        <p class="text-[11px] tracking-widest uppercase text-ink/60">Partnership Portal</p>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm">
+      <a class="text-ink/70 hover:text-ink" href="#">Home</a>
+      <a class="text-ink hover:text-ink font-medium" href="#">Give</a>
+      <a class="text-ink/70 hover:text-ink" href="#">Campaigns</a>
+      <a class="text-ink/70 hover:text-ink" href="#">My History</a>
+      <a class="text-ink/70 hover:text-ink" href="#">Support</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <button class="hidden sm:flex w-9 h-9 rounded-full border border-ink/15 items-center justify-center hover:bg-ink/5">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.4-1.4A7 7 0 0019 10V9a7 7 0 10-14 0v1a7 7 0 00.4 5.6L4 17h5m6 0a3 3 0 11-6 0"/></svg>
+      </button>
+      <div class="flex items-center gap-2 pl-2 pr-3 py-1 rounded-full border border-ink/15">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-gold to-sage flex items-center justify-center text-white text-xs font-semibold">DA</div>
+        <span class="text-sm hidden sm:block">David A.</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-5 lg:px-10 py-8 lg:py-12">
+
+  <!-- HERO GREETING -->
+  <section class="mb-10">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="pulse-dot"></span>
+      <p class="text-xs uppercase tracking-[0.2em] text-ink/60">Sunday, Nov 17 · Live Service in 2h 14m</p>
+    </div>
+    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
+      Good morning, David.<br/>
+      <span class="italic text-ink/70">Thank you for </span><span class="text-gold">partnering</span><span class="italic text-ink/70"> with us.</span>
+    </h1>
+    <p class="mt-4 max-w-2xl text-ink/70 text-lg">Your generosity fuels our mission — from feeding 1,200 families this month to planting 3 new campuses in East Africa. Every seed sown has purpose.</p>
+  </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- LEFT: GIVE CARD -->
+    <section class="lg:col-span-2 space-y-6">
+
+      <!-- QUICK GIVE -->
+      <div class="rounded-3xl hero-gradient text-cream p-6 md:p-10 relative overflow-hidden">
+        <div class="absolute inset-0 shine pointer-events-none"></div>
+        <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gold/10 blur-3xl"></div>
+
+        <div class="flex items-center justify-between mb-6 relative">
+          <div>
+            <p class="text-xs uppercase tracking-[0.25em] text-gold/90">Quick Give</p>
+            <h2 class="font-serif text-2xl md:text-3xl mt-1">Sow a seed today</h2>
+          </div>
+          <div class="hidden md:flex items-center gap-2 text-xs bg-white/10 border border-white/15 rounded-full px-3 py-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15l-2-2m0 0l-2 2m2-2v6m8-10a5 5 0 00-9.584-2 4 4 0 00-3.416 6"/></svg>
+            Secure · 256-bit
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex gap-1 p-1 bg-white/5 border border-white/10 rounded-full w-fit mb-6 relative text-sm" id="fundTabs">
+          <button data-tab="tithe" class="tab px-4 py-2 rounded-full font-medium transition bg-gold text-deep">Tithe</button>
+          <button data-tab="offering" class="tab px-4 py-2 rounded-full font-medium transition text-cream/80">Offering</button>
+          <button data-tab="missions" class="tab px-4 py-2 rounded-full font-medium transition text-cream/80">Missions</button>
+          <button data-tab="building" class="tab px-4 py-2 rounded-full font-medium transition text-cream/80 hidden sm:block">Building</button>
+        </div>
+
+        <!-- Amount -->
+        <div class="relative">
+          <div class="flex items-baseline gap-1 mb-5">
+            <span class="font-serif text-4xl md:text-5xl text-gold">$</span>
+            <input id="amount" value="250" class="font-serif text-5xl md:text-7xl bg-transparent outline-none w-full placeholder-white/30" />
+            <span class="text-sm text-cream/60 ml-2">USD</span>
+          </div>
+
+          <div class="flex flex-wrap gap-2 mb-6">
+            <button class="amount-btn px-4 py-2 rounded-full border border-white/20 text-sm hover:bg-white/10" data-amt="50">$50</button>
+            <button class="amount-btn px-4 py-2 rounded-full border border-white/20 text-sm hover:bg-white/10" data-amt="100">$100</button>
+            <button class="amount-btn active px-4 py-2 rounded-full border border-white/20 text-sm" data-amt="250">$250</button>
+            <button class="amount-btn px-4 py-2 rounded-full border border-white/20 text-sm hover:bg-white/10" data-amt="500">$500</button>
+            <button class="amount-btn px-4 py-2 rounded-full border border-white/20 text-sm hover:bg-white/10" data-amt="1000">$1,000</button>
+            <button class="amount-btn px-4 py-2 rounded-full border border-white/20 text-sm hover:bg-white/10" data-amt="custom">Custom</button>
+          </div>
+
+          <!-- Frequency -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
+            <label class="cursor-pointer">
+              <input type="radio" name="freq" class="peer sr-only" />
+              <div class="px-3 py-3 rounded-xl border border-white/15 text-center text-sm peer-checked:bg-white/10 peer-checked:border-gold hover:bg-white/5">One-time</div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="freq" class="peer sr-only" checked />
+              <div class="px-3 py-3 rounded-xl border border-white/15 text-center text-sm peer-checked:bg-gold peer-checked:text-deep peer-checked:border-gold hover:bg-white/5">Weekly</div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="freq" class="peer sr-only" />
+              <div class="px-3 py-3 rounded-xl border border-white/15 text-center text-sm peer-checked:bg-white/10 peer-checked:border-gold hover:bg-white/5">Monthly</div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="freq" class="peer sr-only" />
+              <div class="px-3 py-3 rounded-xl border border-white/15 text-center text-sm peer-checked:bg-white/10 peer-checked:border-gold hover:bg-white/5">Annually</div>
+            </label>
+          </div>
+
+          <!-- Payment + CTA -->
+          <div class="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+            <div class="flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/10 rounded-2xl flex-1">
+              <div class="w-10 h-7 rounded bg-gradient-to-br from-gold to-goldsoft flex items-center justify-center text-[10px] font-bold text-deep">VISA</div>
+              <div class="flex-1">
+                <p class="text-sm">•••• 4829</p>
+                <p class="text-xs text-cream/60">Expires 09/27</p>
+              </div>
+              <button class="text-xs text-gold hover:underline">Change</button>
+            </div>
+            <button class="group flex items-center justify-center gap-2 bg-gold hover:bg-goldsoft text-deep font-semibold px-6 py-4 rounded-2xl transition">
+              Give $<span id="ctaAmt">250</span> Now
+              <svg class="w-4 h-4 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <p class="mt-4 text-xs text-cream/50 flex items-center gap-2">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11V7a4 4 0 118 0m-8 4a2 2 0 00-2 2v5a2 2 0 002 2h8a2 2 0 002-2v-5a2 2 0 00-2-2h-8z"/></svg>
+            Bright Light Ministry Int'l is a 501(c)(3). Your gift is tax-deductible. Receipt emailed instantly.
+          </p>
+        </div>
+      </div>
+
+      <!-- CAMPAIGNS -->
+      <div>
+        <div class="flex items-end justify-between mb-5">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-1">Active Campaigns</p>
+            <h3 class="font-serif text-2xl">Where your seed grows</h3>
+          </div>
+          <a href="#" class="text-sm text-ink/70 hover:text-ink flex items-center gap-1">View all
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5">
+          <!-- Campaign 1 -->
+          <div class="bg-white rounded-2xl border border-ink/10 p-6 hover:shadow-xl hover:-translate-y-1 transition">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-deep flex items-center justify-center">
+                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/></svg>
+              </div>
+              <span class="text-xs bg-sage/10 text-sage px-2.5 py-1 rounded-full font-medium">Urgent</span>
+            </div>
+            <h4 class="font-serif text-xl mb-2">House of Prayer Expansion</h4>
+            <p class="text-sm text-ink/60 mb-5">Adding 800 seats & a new youth wing to our main sanctuary.</p>
+            <div class="flex items-baseline justify-between mb-2 text-sm">
+              <span class="font-serif text-lg"><span class="text-gold">$1.84M</span> <span class="text-ink/50 text-sm">of $2.5M</span></span>
+              <span class="text-ink/60">73%</span>
+            </div>
+            <div class="h-2 bg-ink/10 rounded-full overflow-hidden">
+              <div class="progress-bar-fill h-full rounded-full" style="width: 73%"></div>
+            </div>
+            <div class="flex justify-between mt-4 text-xs text-ink/60">
+              <span>412 partners</span>
+              <span>Ends Dec 31</span>
+            </div>
+          </div>
+
+          <!-- Campaign 2 -->
+          <div class="bg-white rounded-2xl border border-ink/10 p-6 hover:shadow-xl hover:-translate-y-1 transition">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-sage flex items-center justify-center">
+                <svg class="w-6 h-6 text-cream" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+              </div>
+              <span class="text-xs bg-gold/15 text-gold px-2.5 py-1 rounded-full font-medium">Missions</span>
+            </div>
+            <h4 class="font-serif text-xl mb-2">Kenya Church Plant</h4>
+            <p class="text-sm text-ink/60 mb-5">Building a sanctuary & well in Kisumu, serving 3 villages.</p>
+            <div class="flex items-baseline justify-between mb-2 text-sm">
+              <span class="font-serif text-lg"><span class="text-gold">$62,400</span> <span class="text-ink/50 text-sm">of $120K</span></span>
+              <span class="text-ink/60">52%</span>
+            </div>
+            <div class="h-2 bg-ink/10 rounded-full overflow-hidden">
+              <div class="progress-bar-fill h-full rounded-full" style="width: 52%"></div>
+            </div>
+            <div class="flex justify-between mt-4 text-xs text-ink/60">
+              <span>189 partners</span>
+              <span>Ends Feb 14</span>
+            </div>
+          </div>
+
+          <!-- Campaign 3 -->
+          <div class="bg-white rounded-2xl border border-ink/10 p-6 hover:shadow-xl hover:-translate-y-1 transition">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-gold flex items-center justify-center">
+                <svg class="w-6 h-6 text-deep" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/></svg>
+              </div>
+              <span class="text-xs bg-ink/10 text-ink/70 px-2.5 py-1 rounded-full font-medium">Seasonal</span>
+            </div>
+            <h4 class="font-serif text-xl mb-2">Thanksgiving Baskets</h4>
+            <p class="text-sm text-ink/60 mb-5">Provide meals for 1,500 families across our city this holiday.</p>
+            <div class="flex items-baseline justify-between mb-2 text-sm">
+              <span class="font-serif text-lg"><span class="text-gold">$43,200</span> <span class="text-ink/50 text-sm">of $50K</span></span>
+              <span class="text-ink/60">86%</span>
+            </div>
+            <div class="h-2 bg-ink/10 rounded-full overflow-hidden">
+              <div class="progress-bar-fill h-full rounded-full" style="width: 86%"></div>
+            </div>
+            <div class="flex justify-between mt-4 text-xs text-ink/60">
+              <span>624 partners</span>
+              <span>Ends Nov 27</span>
+            </div>
+          </div>
+
+          <!-- Campaign 4 -->
+          <div class="bg-white rounded-2xl border border-ink/10 p-6 hover:shadow-xl hover:-translate-y-1 transition">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-deep flex items-center justify-center">
+                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5zM12 14l9-5v6L12 20 3 15V9l9 5z"/></svg>
+              </div>
+              <span class="text-xs bg-ink/10 text-ink/70 px-2.5 py-1 rounded-full font-medium">Scholarship</span>
+            </div>
+            <h4 class="font-serif text-xl mb-2">Bible College Tuition</h4>
+            <p class="text-sm text-ink/60 mb-5">Sponsor 40 students pursuing full-time ministry training.</p>
+            <div class="flex items-baseline justify-between mb-2 text-sm">
+              <span class="font-serif text-lg"><span class="text-gold">$28,900</span> <span class="text-ink/50 text-sm">of $80K</span></span>
+              <span class="text-ink/60">36%</span>
+            </div>
+            <div class="h-2 bg-ink/10 rounded-full overflow-hidden">
+              <div class="progress-bar-fill h-full rounded-full" style="width: 36%"></div>
+            </div>
+            <div class="flex justify-between mt-4 text-xs text-ink/60">
+              <span>97 partners</span>
+              <span>Ends Jun 30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="space-y-6">
+
+      <!-- Partnership Status -->
+      <div class="bg-deep text-cream rounded-3xl p-6 relative overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gold/20 blur-2xl"></div>
+        <div class="flex items-center gap-2 mb-1 relative">
+          <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/></svg>
+          <p class="text-xs uppercase tracking-[0.2em] text-gold">Gold Partner</p>
+        </div>
+        <h3 class="font-serif text-2xl mb-4 relative">Your Partnership</h3>
+
+        <div class="space-y-4 relative">
+          <div class="flex justify-between items-baseline">
+            <span class="text-sm text-cream/70">Given this year</span>
+            <span class="font-serif text-xl text-gold">$4,820</span>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <span class="text-sm text-cream/70">Consecutive months</span>
+            <span class="font-serif text-xl">28</span>
+          </div>
+          <div class="flex justify-between items-baseline">
+            <span class="text-sm text-cream/70">Next milestone</span>
+            <span class="text-sm">Platinum · $5K</span>
+          </div>
+          <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+            <div class="progress-bar-fill h-full rounded-full" style="width: 96%"></div>
+          </div>
+          <p class="text-xs text-cream/60">Just $180 more to reach Platinum this year.</p>
+        </div>
+
+        <button class="mt-6 w-full bg-white/10 hover:bg-white/15 border border-white/15 rounded-xl py-3 text-sm font-medium">View Giving Statement</button>
+      </div>
+
+      <!-- Pledge -->
+      <div class="bg-white rounded-3xl border border-ink/10 p-6">
+        <div class="flex items-center justify-between mb-1">
+          <p class="text-xs uppercase tracking-[0.2em] text-ink/50">2024 Faith Pledge</p>
+          <span class="text-xs bg-sage/15 text-sage px-2 py-0.5 rounded-full">On track</span>
+        </div>
+        <h3 class="font-serif text-xl mt-2">$6,000 committed</h3>
+        <div class="mt-4 flex items-baseline gap-2">
+          <span class="font-serif text-3xl text-gold">80%</span>
+          <span class="text-sm text-ink/60">of pledge fulfilled</span>
+        </div>
+        <div class="h-2 bg-ink/10 rounded-full overflow-hidden mt-3">
+          <div class="progress-bar-fill h-full rounded-full" style="width: 80%"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-5 text-sm">
+          <div class="bg-cream rounded-xl p-3">
+            <p class="text-ink/50 text-xs">Paid</p>
+            <p class="font-serif text-lg">$4,820</p>
+          </div>
+          <div class="bg-cream rounded-xl p-3">
+            <p class="text-ink/50 text-xs">Remaining</p>
+            <p class="font-serif text-lg">$1,180</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Gifts -->
+      <div class="bg-white rounded-3xl border border-ink/10 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-serif text-xl">Recent gifts</h3>
+          <a href="#" class="text-xs text-ink/60 hover:text-ink">All</a>
+        </div>
+        <ul class="space-y-4">
+          <li class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gold/15 flex items-center justify-center">
+              <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M6 8h12"/></svg>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">Weekly Tithe</p>
+              <p class="text-xs text-ink/50">Nov 10 · Visa •4829</p>
+            </div>
+            <span class="font-serif text-sm">$250</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-sage/15 flex items-center justify-center">
+              <svg class="w-4 h-4 text-sage" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/></svg>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">Kenya Plant</p>
+              <p class="text-xs text-ink/50">Nov 5 · One-time</p>
+            </div>
+            <span class="font-serif text-sm">$500</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-deep/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-deep" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 21h18M4 21V10l8-6 8 6v11"/></svg>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">Building Fund</p>
+              <p class="text-xs text-ink/50">Nov 3 · One-time</p>
+            </div>
+            <span class="font-serif text-sm">$1,000</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gold/15 flex items-center justify-center">
+              <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M6 8h12"/></svg>
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-medium">Weekly Tithe</p>
+              <p class="text-xs text-ink/50">Oct 27 · Visa •4829</p>
+            </div>
+            <span class="font-serif text-sm">$250</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Verse -->
+      <div class="rounded-3xl p-6 grain border border-gold/30 bg-goldsoft/20">
+        <svg class="w-6 h-6 text-gold mb-3" fill="currentColor" viewBox="0 0 24 24"><path d="M9 7H5a2 2 0 00-2 2v4a2 2 0 002 2h2v2a2 2 0 01-2 2H4v2h1a4 4 0 004-4V7zm10 0h-4a2 2 0 00-2 2v4a2 2 0 002 2h2v2a2 2 0 01-2 2h-1v2h1a4 4 0 004-4V7z"/></svg>
+        <p class="font-serif italic text-lg leading-snug">"Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver."</p>
+        <p class="text-xs text-ink/60 mt-3 tracking-widest uppercase">2 Corinthians 9:7</p>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- IMPACT STRIP -->
+  <section class="mt-12">
+    <div class="divider-ornate mb-8">
+      <span class="text-xs uppercase tracking-[0.3em]">Your collective impact</span>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+      <div class="bg-white rounded-2xl p-6 border border-ink/10 text-center">
+        <p class="font-serif text-4xl text-gold">1,247</p>
+        <p class="text-sm text-ink/60 mt-1">Families fed</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-ink/10 text-center">
+        <p class="font-serif text-4xl text-gold">38</p>
+        <p class="text-sm text-ink/60 mt-1">Missionaries sent</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-ink/10 text-center">
+        <p class="font-serif text-4xl text-gold">3</p>
+        <p class="text-sm text-ink/60 mt-1">Campuses planted</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 border border-ink/10 text-center">
+        <p class="font-serif text-4xl text-gold">12K+</p>
+        <p class="text-sm text-ink/60 mt-1">Lives touched</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="mt-14 pt-8 border-t border-ink/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-ink/60">
+    <p>© 2024 Bright Light Ministry Int'l · Tax ID 47-1234567</p>
+    <div class="flex items-center gap-5">
+      <a href="#" class="hover:text-ink">Privacy</a>
+      <a href="#" class="hover:text-ink">Terms</a>
+      <a href="#" class="hover:text-ink">Contact</a>
+      <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 11V7a4 4 0 118 0m-8 4a2 2 0 00-2 2v5a2 2 0 002 2h8a2 2 0 002-2v-5a2 2 0 00-2-2h-8z"/></svg> PCI-DSS secured</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // Amount buttons
+  const amountBtns = document.querySelectorAll('.amount-btn');
+  const amountInput = document.getElementById('amount');
+  const ctaAmt = document.getElementById('ctaAmt');
+
+  amountBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      amountBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const val = btn.dataset.amt;
+      if (val !== 'custom') {
+        amountInput.value = val;
+        ctaAmt.textContent = Number(val).toLocaleString();
+      } else {
+        amountInput.focus();
+        amountInput.value = '';
+      }
+    });
+  });
+
+  amountInput.addEventListener('input', () => {
+    const v = parseInt(amountInput.value || 0);
+    ctaAmt.textContent = v.toLocaleString();
+  });
+
+  // Tabs
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => {
+        x.classList.remove('bg-gold', 'text-deep');
+        x.classList.add('text-cream/80');
+      });
+      t.classList.add('bg-gold', 'text-deep');
+      t.classList.remove('text-cream/80');
+    });
+  });
+</script>
+</body>
+</html>

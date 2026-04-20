@@ -1,0 +1,31 @@
+RewriteEngine On
+
+# Block access to .env file
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Block access to sensitive directories
+<IfModule mod_rewrite.c>
+    RewriteRule ^\.env - [F,L]
+    RewriteRule ^database/ - [F,L]
+    RewriteRule ^src/cache/ - [F,L]
+    RewriteRule ^\.git - [F,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disable directory browsing
+Options -Indexes
+
+# Route to public directory (if document root is not set to public/)
+# Uncomment the following lines if you cannot change document root
+# RewriteCond %{REQUEST_URI} !^/public/
+# RewriteRule ^(.*)$ /public/$1 [L]

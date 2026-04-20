@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Grace Cathedral — Add Campaign</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#FAF6EF',
+          ink: '#0F1B2D',
+          gold: '#C9A24B',
+          goldsoft: '#E7D9B4',
+          deep: '#122137',
+          sage: '#5B7B6A',
+        },
+        fontFamily: {
+          serif: ['"Fraunces"', 'ui-serif', 'Georgia', 'serif'],
+          sans: ['"Inter"', 'ui-sans-serif', 'system-ui'],
+        }
+      }
+    }
+  }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body { font-family: 'Inter', sans-serif; background: #FAF6EF; color: #0F1B2D; }
+  .font-serif { font-family: 'Fraunces', serif; }
+  .grain {
+    background-image:
+      radial-gradient(rgba(201,162,75,0.08) 1px, transparent 1px),
+      radial-gradient(rgba(15,27,45,0.05) 1px, transparent 1px);
+    background-size: 24px 24px, 48px 48px;
+    background-position: 0 0, 12px 12px;
+  }
+  .hero-gradient {
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(201,162,75,0.25), transparent 55%),
+      radial-gradient(ellipse at 0% 100%, rgba(91,123,106,0.28), transparent 55%),
+      linear-gradient(135deg, #122137 0%, #0F1B2D 60%, #081220 100%);
+  }
+  .progress-bar-fill { background: linear-gradient(90deg, #C9A24B, #E7D9B4); }
+  .divider-ornate {
+    display: flex; align-items: center; gap: 12px; color: #C9A24B;
+  }
+  .divider-ornate::before, .divider-ornate::after {
+    content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #C9A24B, transparent);
+  }
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 999px; background: #5B7B6A;
+    box-shadow: 0 0 0 0 rgba(91,123,106,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(91,123,106,0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(91,123,106,0); }
+    100% { box-shadow: 0 0 0 0 rgba(91,123,106,0); }
+  }
+
+  /* Form fields */
+  .field-input {
+    width: 100%;
+    background: #FAF6EF;
+    border: 1.5px solid rgba(15,27,45,0.12);
+    border-radius: 14px;
+    padding: 13px 16px;
+    font-size: 14px;
+    color: #0F1B2D;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .field-input:focus {
+    border-color: #C9A24B;
+    box-shadow: 0 0 0 3px rgba(201,162,75,0.12);
+  }
+  .field-input::placeholder { color: rgba(15,27,45,0.35); }
+  .field-input:disabled { opacity: 0.5; cursor: not-allowed; }
+  textarea.field-input { resize: vertical; min-height: 100px; }
+  select.field-input { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%230F1B2D' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+
+  .field-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(15,27,45,0.55);
+    margin-bottom: 8px;
+  }
+  .field-hint {
+    font-size: 11.5px;
+    color: rgba(15,27,45,0.45);
+    margin-top: 6px;
+  }
+  .field-error {
+    font-size: 11.5px;
+    color: #c0392b;
+    margin-top: 6px;
+    display: none;
+  }
+  .field-group.has-error .field-input { border-color: #c0392b; }
+  .field-group.has-error .field-error { display: block; }
+  .field-group.has-error .field-hint { display: none; }
+
+  /* Step indicator */
+  .step-dot {
+    width: 32px; height: 32px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; flex-shrink: 0;
+    transition: all .3s ease;
+  }
+  .step-dot.active { background: #0F1B2D; color: #FAF6EF; }
+  .step-dot.done { background: #C9A24B; color: #122137; }
+  .step-dot.pending { background: rgba(15,27,45,0.08); color: rgba(15,27,45,0.4); }
+  .step-line { flex: 1; height: 1px; background: rgba(15,27,45,0.1); }
+  .step-line.done { background: linear-gradient(90deg, #C9A24B, #E7D9B4); }
+
+  /* Icon picker */
+  .icon-opt input[type=radio] { display: none; }
+  .icon-opt label {
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 14px;
+    border: 1.5px solid rgba(15,27,45,0.1);
+    cursor: pointer; transition: all .2s;
+  }
+  .icon-opt input:checked + label {
+    border-color: #C9A24B;
+    background: #C9A24B;
+    color: #122137;
+    box-shadow: 0 4px 12px rgba(201,162,75,0.3);
+  }
+  .icon-opt label:hover { border-color: rgba(201,162,75,0.5); background: rgba(201,162,75,0.08); }
+
+  /* Color picker */
+  .color-opt input[type=radio] { display: none; }
+  .color-opt label {
+    display: block; width: 28px; height: 28px; border-radius: 999px;
+    cursor: pointer; border: 2.5px solid transparent;
+    transition: all .2s; position: relative;
+  }
+  .color-opt input:checked + label {
+    border-color: #0F1B2D;
+    transform: scale(1.15);
+    box-shadow: 0 2px 8px rgba(15,27,45,0.2);
+  }
+  .color-opt label::after {
+    content: ''; position: absolute; inset: 3px; border-radius: 999px;
+  }
+
+  /* Tag chips */
+  .tag-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(15,27,45,0.06); border-radius: 999px;
+    padding: 4px 12px; font-size: 12px; font-weight: 500;
+  }
+  .tag-chip button { line-height: 1; color: rgba(15,27,45,0.4); transition: color .15s; }
+  .tag-chip button:hover { color: #0F1B2D; }
+
+  /* File drop zone */
+  .drop-zone {
+    border: 2px dashed rgba(201,162,75,0.35);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: #C9A24B;
+    background: rgba(201,162,75,0.05);
+  }
+
+  /* Milestone row */
+  .milestone-row { animation: fadeSlideIn .25s ease; }
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Form section card */
+  .form-card {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid rgba(15,27,45,0.08);
+    padding: 28px 28px;
+  }
+
+  /* Preview panel */
+  .preview-badge { transition: all .3s; }
+
+  /* Submit shimmer */
+  .btn-submit {
+    position: relative; overflow: hidden;
+    background: #0F1B2D; color: #FAF6EF;
+    border-radius: 14px; padding: 15px 28px;
+    font-weight: 600; font-size: 15px;
+    transition: background .2s;
+    width: 100%;
+  }
+  .btn-submit::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shine 4s linear infinite;
+  }
+  @keyframes shine {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .btn-submit:hover { background: #1a2e47; }
+  .btn-secondary {
+    border: 1.5px solid rgba(15,27,45,0.12);
+    border-radius: 14px; padding: 14px 24px;
+    font-weight: 500; font-size: 14px;
+    transition: all .2s; color: #0F1B2D;
+  }
+  .btn-secondary:hover { background: rgba(15,27,45,0.04); }
+
+  /* Toggle switch */
+  .toggle-switch { position: relative; width: 44px; height: 24px; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: rgba(15,27,45,0.12);
+    border-radius: 999px; cursor: pointer;
+    transition: .2s;
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute;
+    height: 18px; width: 18px; left: 3px; top: 3px;
+    background: white; border-radius: 999px;
+    transition: .2s; box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+  .toggle-switch input:checked + .toggle-slider { background: #C9A24B; }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.active { display: block; animation: fadeSlideIn .3s ease; }
+
+  /* Progress fill for preview */
+  #previewProgress { transition: width .4s ease; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-40 backdrop-blur bg-cream/80 border-b border-ink/10">
+  <div class="max-w-7xl mx-auto px-5 lg:px-10 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-deep flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M6 8h12"/></svg>
+      </div>
+      <div>
+        <p class="font-serif text-lg leading-none">Grace Cathedral</p>
+        <p class="text-[11px] tracking-widest uppercase text-ink/60">Partnership Portal</p>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm">
+      <a class="text-ink/70 hover:text-ink" href="#">Home</a>
+      <a class="text-ink/70 hover:text-ink" href="#">Give</a>
+      <a class="text-ink font-medium" href="#">Campaigns</a>
+      <a class="text-ink/70 hover:text-ink" href="#">My History</a>
+      <a class="text-ink/70 hover:text-ink" href="#">Support</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 pl-2 pr-3 py-1 rounded-full border border-ink/15">
+        <div class="w-7 h-7 rounded-full bg-gradient-to-br from-gold to-sage flex items-center justify-center text-white text-xs font-semibold">DA</div>
+        <span class="text-sm hidden sm:block">David A.</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-5 lg:px-10 py-8 lg:py-12">
+
+  <!-- PAGE HEADER -->
+  <div class="mb-10">
+    <nav class="flex items-center gap-2 text-sm text-ink/50 mb-5">
+      <a href="#" class="hover:text-ink">Home</a>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      <a href="#" class="hover:text-ink">Campaigns</a>
+      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      <span class="text-ink font-medium">New Campaign</span>
+    </nav>
+    <div class="flex items-end justify-between flex-wrap gap-4">
+      <div>
+        <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-2">Campaign Management</p>
+        <h1 class="font-serif text-4xl md:text-5xl leading-tight">Launch a new <span class="italic text-ink/60">campaign</span></h1>
+        <p class="mt-3 text-ink/60 max-w-xl">Create a fundraising campaign to mobilise your congregation around a specific vision or need.</p>
+      </div>
+      <a href="#" class="btn-secondary flex items-center gap-2 text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back to campaigns
+      </a>
+    </div>
+  </div>
+
+  <!-- STEP INDICATOR -->
+  <div class="flex items-center gap-2 mb-10" id="stepIndicator">
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="step-dot active" id="dot1">1</div>
+      <p class="text-[10px] uppercase tracking-wider text-ink/60 hidden sm:block">Basics</p>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="step-dot pending" id="dot2">2</div>
+      <p class="text-[10px] uppercase tracking-wider text-ink/60 hidden sm:block">Goals</p>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="step-dot pending" id="dot3">3</div>
+      <p class="text-[10px] uppercase tracking-wider text-ink/60 hidden sm:block">Milestones</p>
+    </div>
+    <div class="step-line" id="line3"></div>
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="step-dot pending" id="dot4">4</div>
+      <p class="text-[10px] uppercase tracking-wider text-ink/60 hidden sm:block">Media</p>
+    </div>
+    <div class="step-line" id="line4"></div>
+    <div class="flex flex-col items-center gap-1.5">
+      <div class="step-dot pending" id="dot5">5</div>
+      <p class="text-[10px] uppercase tracking-wider text-ink/60 hidden sm:block">Review</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- FORM STEPS -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- ═══════════════════════════════════════ STEP 1: BASICS -->
+      <div class="step-panel active" id="step1">
+        <div class="form-card space-y-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-1">Step 1 of 5</p>
+            <h2 class="font-serif text-2xl">Campaign basics</h2>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Identity</span></div>
+
+          <!-- Campaign Name -->
+          <div class="field-group" id="fg-name">
+            <label class="field-label" for="campName">Campaign name <span class="text-gold">*</span></label>
+            <input class="field-input" id="campName" type="text" placeholder="e.g. House of Prayer Expansion" maxlength="80" oninput="updatePreview()" />
+            <div class="flex justify-between items-center mt-1.5">
+              <p class="field-hint">Clear, inspiring title visible to all partners</p>
+              <p class="text-[11px] text-ink/40" id="nameCount">0 / 80</p>
+            </div>
+            <p class="field-error">Campaign name is required</p>
+          </div>
+
+          <!-- Slug / URL -->
+          <div class="field-group">
+            <label class="field-label" for="campSlug">Campaign URL slug</label>
+            <div class="flex items-center gap-0 border-[1.5px] border-ink/12 rounded-[14px] overflow-hidden focus-within:border-gold focus-within:shadow-[0_0_0_3px_rgba(201,162,75,0.12)] transition-all">
+              <span class="px-4 py-3.5 text-sm text-ink/40 bg-ink/3 border-r border-ink/10 whitespace-nowrap select-none">gracecathedral.org/give/</span>
+              <input class="flex-1 px-4 py-3.5 text-sm outline-none bg-transparent" id="campSlug" type="text" placeholder="house-of-prayer" oninput="autoSlug(false)" />
+            </div>
+            <p class="field-hint">Auto-generated from campaign name — customise if needed</p>
+          </div>
+
+          <!-- Category + Type row -->
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="field-group">
+              <label class="field-label" for="campCat">Category <span class="text-gold">*</span></label>
+              <select class="field-input" id="campCat" onchange="updatePreview()">
+                <option value="">Select category…</option>
+                <option value="building">Building Fund</option>
+                <option value="missions">Missions</option>
+                <option value="outreach">Community Outreach</option>
+                <option value="scholarship">Scholarship</option>
+                <option value="seasonal">Seasonal</option>
+                <option value="tithe">Tithe</option>
+                <option value="offering">General Offering</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="campType">Campaign type <span class="text-gold">*</span></label>
+              <select class="field-input" id="campType">
+                <option value="">Select type…</option>
+                <option value="one-time">One-time drive</option>
+                <option value="ongoing">Ongoing fund</option>
+                <option value="pledge">Pledge campaign</option>
+                <option value="matching">Matching gift</option>
+                <option value="emergency">Emergency appeal</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Short Description -->
+          <div class="field-group" id="fg-shortdesc">
+            <label class="field-label" for="campShort">Short description <span class="text-gold">*</span></label>
+            <input class="field-input" id="campShort" type="text" placeholder="One sentence that captures the vision…" maxlength="160" />
+            <div class="flex justify-between items-center mt-1.5">
+              <p class="field-hint">Shown on campaign cards — keep it under 160 characters</p>
+              <p class="text-[11px] text-ink/40" id="shortCount">0 / 160</p>
+            </div>
+            <p class="field-error">Short description is required</p>
+          </div>
+
+          <!-- Full Description -->
+          <div class="field-group">
+            <label class="field-label" for="campDesc">Full description</label>
+            <textarea class="field-input" id="campDesc" rows="5" placeholder="Tell the full story — context, need, vision, and expected impact…"></textarea>
+            <p class="field-hint">Displayed on the campaign detail page. Markdown supported.</p>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Appearance</span></div>
+
+          <!-- Icon picker -->
+          <div>
+            <label class="field-label">Campaign icon <span class="text-gold">*</span></label>
+            <div class="flex flex-wrap gap-3 mt-1" id="iconPicker">
+              <!-- building -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-building" value="building" checked onchange="updatePreview()" />
+                <label for="icon-building">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/></svg>
+                </label>
+              </div>
+              <!-- globe -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-globe" value="globe" onchange="updatePreview()" />
+                <label for="icon-globe">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>
+                </label>
+              </div>
+              <!-- star -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-star" value="star" onchange="updatePreview()" />
+                <label for="icon-star">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/></svg>
+                </label>
+              </div>
+              <!-- book -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-book" value="book" onchange="updatePreview()" />
+                <label for="icon-book">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5zM12 14l9-5v6L12 20 3 15V9l9 5z"/></svg>
+                </label>
+              </div>
+              <!-- heart -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-heart" value="heart" onchange="updatePreview()" />
+                <label for="icon-heart">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+                </label>
+              </div>
+              <!-- cross -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-cross" value="cross" onchange="updatePreview()" />
+                <label for="icon-cross">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2v20M6 8h12"/></svg>
+                </label>
+              </div>
+              <!-- people -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-people" value="people" onchange="updatePreview()" />
+                <label for="icon-people">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                </label>
+              </div>
+              <!-- leaf -->
+              <div class="icon-opt">
+                <input type="radio" name="campIcon" id="icon-leaf" value="leaf" onchange="updatePreview()" />
+                <label for="icon-leaf">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22V12M12 12C12 7 17 3 21 3c0 4-2 9-9 9zM12 12c0-5-5-9-9-9 0 4 2 9 9 9z"/></svg>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accent colour -->
+          <div>
+            <label class="field-label">Accent colour</label>
+            <div class="flex items-center gap-3 mt-1" id="colorPicker">
+              <div class="color-opt"><input type="radio" name="campColor" id="col-deep" value="deep" checked onchange="updatePreview()" /><label for="col-deep" style="background:#122137;"></label></div>
+              <div class="color-opt"><input type="radio" name="campColor" id="col-gold" value="gold" onchange="updatePreview()" /><label for="col-gold" style="background:#C9A24B;"></label></div>
+              <div class="color-opt"><input type="radio" name="campColor" id="col-sage" value="sage" onchange="updatePreview()" /><label for="col-sage" style="background:#5B7B6A;"></label></div>
+              <div class="color-opt"><input type="radio" name="campColor" id="col-ink" value="ink" onchange="updatePreview()" /><label for="col-ink" style="background:#0F1B2D;"></label></div>
+              <div class="color-opt"><input type="radio" name="campColor" id="col-rose" value="rose" onchange="updatePreview()" /><label for="col-rose" style="background:#8B4055;"></label></div>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <label class="field-label">Tags</label>
+            <div class="flex flex-wrap gap-2 mb-3" id="tagContainer"></div>
+            <div class="flex gap-2">
+              <input class="field-input flex-1" id="tagInput" type="text" placeholder="Add a tag and press Enter…" onkeydown="addTag(event)" />
+              <button type="button" onclick="addTag({key:'Enter', target: document.getElementById('tagInput')})" class="px-4 py-2 bg-ink/5 hover:bg-ink/10 border border-ink/10 rounded-[14px] text-sm transition">Add</button>
+            </div>
+            <p class="field-hint">e.g. urgent, missions, building, community</p>
+          </div>
+
+          <!-- Visibility + Featured -->
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="field-group">
+              <label class="field-label" for="campVisibility">Visibility</label>
+              <select class="field-input" id="campVisibility">
+                <option value="public">Public — visible to all members</option>
+                <option value="members">Members only</option>
+                <option value="invite">Invite only</option>
+                <option value="draft">Draft — not yet visible</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Options</label>
+              <div class="space-y-3 mt-1">
+                <div class="flex items-center justify-between p-3 bg-cream rounded-xl border border-ink/8">
+                  <div>
+                    <p class="text-sm font-medium">Feature on homepage</p>
+                    <p class="text-xs text-ink/50">Show in spotlight carousel</p>
+                  </div>
+                  <label class="toggle-switch"><input type="checkbox" id="toggleFeatured" /><span class="toggle-slider"></span></label>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-cream rounded-xl border border-ink/8">
+                  <div>
+                    <p class="text-sm font-medium">Allow anonymous giving</p>
+                    <p class="text-xs text-ink/50">Hide donor names if chosen</p>
+                  </div>
+                  <label class="toggle-switch"><input type="checkbox" id="toggleAnon" checked /><span class="toggle-slider"></span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <div class="flex justify-end mt-4">
+          <button onclick="goStep(2)" class="btn-submit flex items-center justify-center gap-2" style="width:auto;padding:13px 32px;">
+            Continue to Goals
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ STEP 2: GOALS -->
+      <div class="step-panel" id="step2">
+        <div class="form-card space-y-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-1">Step 2 of 5</p>
+            <h2 class="font-serif text-2xl">Fundraising goals</h2>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Financial targets</span></div>
+
+          <!-- Goal amount -->
+          <div class="field-group" id="fg-goal">
+            <label class="field-label" for="campGoal">Fundraising goal <span class="text-gold">*</span></label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 font-serif text-xl text-gold pointer-events-none">$</span>
+              <input class="field-input pl-10 font-serif text-xl" id="campGoal" type="number" min="1000" step="500" placeholder="0" oninput="updatePreview()" />
+            </div>
+            <p class="field-hint">Total target amount for this campaign (USD)</p>
+            <p class="field-error">A goal amount is required</p>
+          </div>
+
+          <!-- Starting amount (if existing pledges) -->
+          <div class="field-group">
+            <label class="field-label" for="campStartAmt">Starting amount raised</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 font-serif text-xl text-gold pointer-events-none">$</span>
+              <input class="field-input pl-10 font-serif text-xl" id="campStartAmt" type="number" min="0" step="100" placeholder="0" />
+            </div>
+            <p class="field-hint">Pre-existing pledges or gifts to include at launch</p>
+          </div>
+
+          <!-- Suggested giving amounts -->
+          <div>
+            <label class="field-label">Suggested giving amounts</label>
+            <div class="grid grid-cols-4 gap-3" id="suggestedAmts">
+              <input class="field-input text-center font-serif text-lg" type="number" placeholder="50" value="50" />
+              <input class="field-input text-center font-serif text-lg" type="number" placeholder="100" value="100" />
+              <input class="field-input text-center font-serif text-lg" type="number" placeholder="250" value="250" />
+              <input class="field-input text-center font-serif text-lg" type="number" placeholder="500" value="500" />
+            </div>
+            <p class="field-hint">Four quick-select amounts shown on the give form</p>
+          </div>
+
+          <!-- Min / max gift -->
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="field-group">
+              <label class="field-label" for="campMin">Minimum gift amount</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-ink/40 pointer-events-none text-sm">$</span>
+                <input class="field-input pl-8" id="campMin" type="number" min="1" placeholder="No minimum" />
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="campMax">Maximum gift amount</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-ink/40 pointer-events-none text-sm">$</span>
+                <input class="field-input pl-8" id="campMax" type="number" min="1" placeholder="No maximum" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Allowed frequencies -->
+          <div>
+            <label class="field-label">Allowed giving frequencies <span class="text-gold">*</span></label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-1">
+              <label class="flex items-center gap-2.5 p-3 bg-cream rounded-xl border border-ink/8 cursor-pointer hover:border-gold/40 transition has-[:checked]:border-gold has-[:checked]:bg-gold/5">
+                <input type="checkbox" checked class="accent-gold w-4 h-4" /> <span class="text-sm">One-time</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 bg-cream rounded-xl border border-ink/8 cursor-pointer hover:border-gold/40 transition has-[:checked]:border-gold has-[:checked]:bg-gold/5">
+                <input type="checkbox" checked class="accent-gold w-4 h-4" /> <span class="text-sm">Weekly</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 bg-cream rounded-xl border border-ink/8 cursor-pointer hover:border-gold/40 transition has-[:checked]:border-gold has-[:checked]:bg-gold/5">
+                <input type="checkbox" checked class="accent-gold w-4 h-4" /> <span class="text-sm">Monthly</span>
+              </label>
+              <label class="flex items-center gap-2.5 p-3 bg-cream rounded-xl border border-ink/8 cursor-pointer hover:border-gold/40 transition has-[:checked]:border-gold has-[:checked]:bg-gold/5">
+                <input type="checkbox" class="accent-gold w-4 h-4" /> <span class="text-sm">Annually</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Schedule</span></div>
+
+          <!-- Dates -->
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="field-group" id="fg-startdate">
+              <label class="field-label" for="campStart">Campaign start date <span class="text-gold">*</span></label>
+              <input class="field-input" id="campStart" type="date" />
+              <p class="field-error">Start date is required</p>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="campEnd">Campaign end date</label>
+              <input class="field-input" id="campEnd" type="date" />
+              <p class="field-hint">Leave blank for open-ended campaigns</p>
+            </div>
+          </div>
+
+          <!-- Tax deductible + receipt -->
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="flex items-center justify-between p-4 bg-cream rounded-xl border border-ink/8">
+              <div>
+                <p class="text-sm font-medium">Tax-deductible</p>
+                <p class="text-xs text-ink/50">Issue 501(c)(3) receipts</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="flex items-center justify-between p-4 bg-cream rounded-xl border border-ink/8">
+              <div>
+                <p class="text-sm font-medium">Matching gift enabled</p>
+                <p class="text-xs text-ink/50">Double donor impact</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" id="matchToggle" onchange="toggleMatching()" /><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+
+          <!-- Matching gift details (conditionally shown) -->
+          <div id="matchingDetails" class="hidden bg-goldsoft/25 border border-gold/30 rounded-2xl p-5 space-y-4">
+            <p class="text-sm font-semibold text-ink/80">Matching gift configuration</p>
+            <div class="grid sm:grid-cols-3 gap-4">
+              <div>
+                <label class="field-label" for="matchRatio">Match ratio</label>
+                <select class="field-input" id="matchRatio">
+                  <option>1:1 (Dollar for dollar)</option>
+                  <option>2:1 (Double match)</option>
+                  <option>0.5:1 (50¢ per dollar)</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="matchCap">Match cap ($)</label>
+                <input class="field-input" id="matchCap" type="number" placeholder="e.g. 50000" />
+              </div>
+              <div>
+                <label class="field-label" for="matchSponsor">Sponsor name</label>
+                <input class="field-input" id="matchSponsor" type="text" placeholder="e.g. The Johnson Family" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Campaign manager -->
+          <div class="field-group">
+            <label class="field-label" for="campManager">Campaign manager</label>
+            <select class="field-input" id="campManager">
+              <option value="">Assign to team member…</option>
+              <option value="pastor">Pastor Nathaniel Williams</option>
+              <option value="admin">Admin — Grace Cathedral</option>
+              <option value="finance">Finance Team</option>
+              <option value="missions">Missions Department</option>
+            </select>
+            <p class="field-hint">Receives campaign notifications and reports</p>
+          </div>
+        </div>
+
+        <div class="flex justify-between mt-4 gap-3">
+          <button onclick="goStep(1)" class="btn-secondary flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <button onclick="goStep(3)" class="btn-submit flex items-center justify-center gap-2" style="width:auto;padding:13px 32px;">
+            Continue to Milestones
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ STEP 3: MILESTONES -->
+      <div class="step-panel" id="step3">
+        <div class="form-card space-y-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-1">Step 3 of 5</p>
+            <h2 class="font-serif text-2xl">Milestones & updates</h2>
+            <p class="text-sm text-ink/60 mt-1">Break your campaign into trackable stages to keep partners engaged.</p>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Milestones</span></div>
+
+          <!-- Milestone list -->
+          <div class="space-y-3" id="milestoneList">
+            <div class="milestone-row bg-cream rounded-2xl border border-ink/8 p-4">
+              <div class="grid sm:grid-cols-3 gap-3 mb-3">
+                <div class="sm:col-span-2">
+                  <label class="field-label">Milestone title</label>
+                  <input class="field-input" type="text" placeholder="e.g. Foundation laid" />
+                </div>
+                <div>
+                  <label class="field-label">Target ($)</label>
+                  <input class="field-input" type="number" placeholder="e.g. 500000" />
+                </div>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="field-label">Expected date</label>
+                  <input class="field-input" type="date" />
+                </div>
+                <div>
+                  <label class="field-label">Description</label>
+                  <input class="field-input" type="text" placeholder="Brief description…" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" onclick="addMilestone()" class="flex items-center gap-2 text-sm text-ink/60 hover:text-ink border border-dashed border-ink/20 hover:border-ink/40 rounded-xl px-4 py-3 w-full justify-center transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            Add another milestone
+          </button>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Launch message</span></div>
+
+          <!-- Launch Update -->
+          <div class="field-group">
+            <label class="field-label" for="campLaunchMsg">Opening campaign update <span class="text-gold">*</span></label>
+            <textarea class="field-input" id="campLaunchMsg" rows="4" placeholder="Write the message that will be sent to all partners when this campaign launches…"></textarea>
+            <p class="field-hint">This appears as the first update on the campaign page</p>
+          </div>
+
+          <!-- Scripture verse -->
+          <div class="field-group">
+            <label class="field-label" for="campVerse">Featured scripture</label>
+            <input class="field-input" id="campVerse" type="text" placeholder="e.g. Psalm 127:1" />
+            <p class="field-hint">Displayed in the scripture block on the campaign page</p>
+          </div>
+
+          <div>
+            <label class="field-label" for="campVerseText">Scripture text</label>
+            <textarea class="field-input" id="campVerseText" rows="2" placeholder="Type the scripture passage…"></textarea>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Notifications</span></div>
+
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-4 bg-cream rounded-xl border border-ink/8">
+              <div>
+                <p class="text-sm font-medium">Notify members at launch</p>
+                <p class="text-xs text-ink/50">Send push + email to all active members</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="flex items-center justify-between p-4 bg-cream rounded-xl border border-ink/8">
+              <div>
+                <p class="text-sm font-medium">Milestone notifications</p>
+                <p class="text-xs text-ink/50">Alert all partners when a milestone is hit</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" checked /><span class="toggle-slider"></span></label>
+            </div>
+            <div class="flex items-center justify-between p-4 bg-cream rounded-xl border border-ink/8">
+              <div>
+                <p class="text-sm font-medium">Deadline reminders</p>
+                <p class="text-xs text-ink/50">Send reminders 7 days and 1 day before close</p>
+              </div>
+              <label class="toggle-switch"><input type="checkbox" /><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-between mt-4 gap-3">
+          <button onclick="goStep(2)" class="btn-secondary flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <button onclick="goStep(4)" class="btn-submit flex items-center justify-center gap-2" style="width:auto;padding:13px 32px;">
+            Continue to Media
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ STEP 4: MEDIA -->
+      <div class="step-panel" id="step4">
+        <div class="form-card space-y-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-1">Step 4 of 5</p>
+            <h2 class="font-serif text-2xl">Media & assets</h2>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Campaign image</span></div>
+
+          <!-- Cover image drop zone -->
+          <div>
+            <label class="field-label">Cover image</label>
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="handleDrop(event)">
+              <div id="dropContent">
+                <svg class="w-10 h-10 text-gold/60 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <p class="text-sm font-medium text-ink/70">Drop an image here, or <span class="text-gold cursor-pointer">browse</span></p>
+                <p class="text-xs text-ink/40 mt-1">JPG, PNG, WebP — recommended 1200×630px, max 5MB</p>
+              </div>
+              <div id="dropPreview" class="hidden text-center">
+                <svg class="w-8 h-8 text-sage mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                <p class="text-sm font-medium text-ink" id="fileName"></p>
+                <button type="button" onclick="clearFile(event)" class="text-xs text-ink/50 hover:text-ink mt-1">Remove</button>
+              </div>
+            </div>
+            <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="handleFile(this)" />
+          </div>
+
+          <!-- Video URL -->
+          <div class="field-group">
+            <label class="field-label" for="campVideo">Video URL</label>
+            <input class="field-input" id="campVideo" type="url" placeholder="https://youtube.com/watch?v=…" />
+            <p class="field-hint">YouTube or Vimeo link embedded on the campaign page</p>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">Documents</span></div>
+
+          <!-- Supporting docs -->
+          <div>
+            <label class="field-label">Supporting documents</label>
+            <div class="space-y-3" id="docList">
+              <div class="flex items-center gap-3">
+                <input class="field-input flex-1" type="text" placeholder="Document title (e.g. Architectural Plans)" />
+                <input class="field-input w-48" type="url" placeholder="URL or upload…" />
+                <button type="button" class="w-10 h-10 flex-shrink-0 rounded-xl border border-ink/10 flex items-center justify-center text-ink/40 hover:text-ink hover:border-ink/30 transition">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4h6v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </div>
+            <button type="button" onclick="addDocRow()" class="flex items-center gap-2 text-sm text-ink/60 hover:text-ink border border-dashed border-ink/20 hover:border-ink/40 rounded-xl px-4 py-3 w-full justify-center mt-3 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              Add document
+            </button>
+          </div>
+
+          <div class="divider-ornate"><span class="text-xs uppercase tracking-[0.25em]">SEO & sharing</span></div>
+
+          <div class="field-group">
+            <label class="field-label" for="campOgTitle">Social share title</label>
+            <input class="field-input" id="campOgTitle" type="text" placeholder="Title shown when shared on social media…" maxlength="60" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="campOgDesc">Social share description</label>
+            <textarea class="field-input" id="campOgDesc" rows="2" placeholder="Short description for social cards…" maxlength="160"></textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-between mt-4 gap-3">
+          <button onclick="goStep(3)" class="btn-secondary flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back
+          </button>
+          <button onclick="goStep(5)" class="btn-submit flex items-center justify-center gap-2" style="width:auto;padding:13px 32px;">
+            Review & Launch
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════ STEP 5: REVIEW -->
+      <div class="step-panel" id="step5">
+        <div class="form-card space-y-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-1">Step 5 of 5</p>
+            <h2 class="font-serif text-2xl">Review & launch</h2>
+            <p class="text-sm text-ink/60 mt-1">Check everything before your campaign goes live.</p>
+          </div>
+
+          <!-- Summary rows -->
+          <div class="space-y-3" id="reviewSummary">
+            <div class="flex justify-between items-center py-3 border-b border-ink/8">
+              <span class="text-sm text-ink/60">Campaign name</span>
+              <span class="text-sm font-medium text-right" id="rev-name">—</span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-ink/8">
+              <span class="text-sm text-ink/60">Category</span>
+              <span class="text-sm font-medium" id="rev-cat">—</span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-ink/8">
+              <span class="text-sm text-ink/60">Fundraising goal</span>
+              <span class="text-sm font-medium font-serif text-gold" id="rev-goal">—</span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-ink/8">
+              <span class="text-sm text-ink/60">Start date</span>
+              <span class="text-sm font-medium" id="rev-start">—</span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-ink/8">
+              <span class="text-sm text-ink/60">End date</span>
+              <span class="text-sm font-medium" id="rev-end">Open-ended</span>
+            </div>
+            <div class="flex justify-between items-center py-3 border-b border-ink/8">
+              <span class="text-sm text-ink/60">Visibility</span>
+              <span class="text-sm font-medium" id="rev-vis">Public</span>
+            </div>
+            <div class="flex justify-between items-center py-3">
+              <span class="text-sm text-ink/60">Campaign manager</span>
+              <span class="text-sm font-medium" id="rev-mgr">—</span>
+            </div>
+          </div>
+
+          <!-- T&C -->
+          <div class="grain border border-gold/30 bg-goldsoft/20 rounded-2xl p-5">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="tosCheck" class="mt-0.5 accent-gold w-4 h-4 flex-shrink-0" />
+              <p class="text-sm text-ink/70 leading-relaxed">I confirm that this campaign complies with Grace Cathedral's <a href="#" class="text-gold hover:underline">financial stewardship policy</a> and all raised funds will be used solely for the stated campaign purpose.</p>
+            </label>
+          </div>
+
+          <!-- Launch mode -->
+          <div>
+            <label class="field-label">Launch mode</label>
+            <div class="grid sm:grid-cols-2 gap-3 mt-1">
+              <label class="cursor-pointer">
+                <input type="radio" name="launchMode" value="now" class="peer sr-only" checked />
+                <div class="p-4 rounded-xl border-[1.5px] border-ink/10 peer-checked:border-gold peer-checked:bg-gold/5 hover:border-gold/40 transition">
+                  <div class="flex items-center gap-2 mb-1">
+                    <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <p class="text-sm font-semibold">Launch now</p>
+                  </div>
+                  <p class="text-xs text-ink/50">Campaign goes live immediately after saving</p>
+                </div>
+              </label>
+              <label class="cursor-pointer">
+                <input type="radio" name="launchMode" value="scheduled" class="peer sr-only" />
+                <div class="p-4 rounded-xl border-[1.5px] border-ink/10 peer-checked:border-gold peer-checked:bg-gold/5 hover:border-gold/40 transition">
+                  <div class="flex items-center gap-2 mb-1">
+                    <svg class="w-4 h-4 text-ink/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    <p class="text-sm font-semibold">Schedule launch</p>
+                  </div>
+                  <p class="text-xs text-ink/50">Goes live on the start date you set</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final actions -->
+        <div class="flex flex-col sm:flex-row justify-between mt-4 gap-3">
+          <button onclick="goStep(4)" class="btn-secondary flex items-center gap-2 justify-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Back to Media
+          </button>
+          <div class="flex gap-3">
+            <button type="button" class="btn-secondary px-5 py-3 text-sm">Save as draft</button>
+            <button type="button" onclick="launchCampaign()" class="btn-submit flex items-center justify-center gap-2" style="width:auto;padding:13px 28px;" id="launchBtn">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Launch Campaign
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR: Live Preview -->
+    <aside class="space-y-5">
+      <div class="sticky top-24">
+
+        <!-- Live preview card -->
+        <div class="bg-white rounded-3xl border border-ink/10 overflow-hidden mb-5">
+          <div class="px-5 pt-5 pb-3 border-b border-ink/8 flex items-center justify-between">
+            <p class="text-xs uppercase tracking-[0.2em] text-ink/50">Live preview</p>
+            <span class="flex items-center gap-1.5 text-xs text-sage"><span class="pulse-dot"></span> Updates as you type</span>
+          </div>
+          <div class="p-5">
+            <!-- Preview campaign card -->
+            <div class="rounded-2xl border border-ink/10 p-5" id="previewCard">
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center" id="previewIconBg" style="background: #122137;">
+                  <svg class="w-6 h-6 text-gold" id="previewIcon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>
+                  </svg>
+                </div>
+                <span class="text-xs bg-gold/15 text-gold px-2.5 py-1 rounded-full font-medium" id="previewBadge">Category</span>
+              </div>
+              <h4 class="font-serif text-lg mb-1.5 leading-snug" id="previewTitle">Campaign name…</h4>
+              <p class="text-xs text-ink/50 mb-4" id="previewDesc">Short description will appear here.</p>
+              <div class="flex items-baseline justify-between mb-1.5 text-sm">
+                <span class="font-serif"><span class="text-gold" id="previewRaised">$0</span> <span class="text-ink/50 text-xs">of <span id="previewGoal">$0</span></span></span>
+                <span class="text-ink/60 text-xs" id="previewPct">0%</span>
+              </div>
+              <div class="h-2 bg-ink/10 rounded-full overflow-hidden">
+                <div class="progress-bar-fill h-full rounded-full" id="previewProgress" style="width: 0%"></div>
+              </div>
+              <div class="flex justify-between mt-3 text-xs text-ink/50">
+                <span>0 partners</span>
+                <span id="previewEndDate">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="bg-white rounded-3xl border border-ink/10 p-5">
+          <p class="text-xs uppercase tracking-[0.2em] text-ink/50 mb-4">Completion checklist</p>
+          <ul class="space-y-2.5" id="checklist">
+            <li class="flex items-center gap-2.5 text-sm" id="chk-name">
+              <div class="w-5 h-5 rounded-full border-2 border-ink/15 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-ink/20 hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              <span class="text-ink/50">Campaign name</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm" id="chk-cat">
+              <div class="w-5 h-5 rounded-full border-2 border-ink/15 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-ink/20 hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              <span class="text-ink/50">Category selected</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm" id="chk-goal">
+              <div class="w-5 h-5 rounded-full border-2 border-ink/15 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-ink/20 hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              <span class="text-ink/50">Goal amount set</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm" id="chk-date">
+              <div class="w-5 h-5 rounded-full border-2 border-ink/15 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-ink/20 hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              <span class="text-ink/50">Start date set</span>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm" id="chk-desc">
+              <div class="w-5 h-5 rounded-full border-2 border-ink/15 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-ink/20 hidden" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+              <span class="text-ink/50">Description added</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+</main>
+
+<!-- SUCCESS TOAST -->
+<div id="successToast" class="fixed bottom-8 right-8 bg-deep text-cream rounded-2xl px-6 py-4 flex items-center gap-3 shadow-2xl translate-y-24 opacity-0 transition-all duration-500 z-50">
+  <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center">
+    <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+  </div>
+  <div>
+    <p class="font-semibold text-sm">Campaign launched!</p>
+    <p class="text-xs text-cream/60">Partners are being notified now.</p>
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+
+  // ─── Step navigation ──────────────────────────────────────
+  function goStep(n) {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+
+    // Update dots
+    for (let i = 1; i <= 5; i++) {
+      const dot = document.getElementById('dot' + i);
+      if (i < n) { dot.className = 'step-dot done'; dot.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>'; }
+      else if (i === n) { dot.className = 'step-dot active'; dot.textContent = i; }
+      else { dot.className = 'step-dot pending'; dot.textContent = i; }
+    }
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('line' + i).className = 'step-line' + (i < n ? ' done' : '');
+    }
+
+    // Populate review on step 5
+    if (n === 5) populateReview();
+
+    currentStep = n;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─── Character counters ────────────────────────────────────
+  document.getElementById('campName').addEventListener('input', e => {
+    document.getElementById('nameCount').textContent = e.target.value.length + ' / 80';
+  });
+  document.getElementById('campShort').addEventListener('input', e => {
+    document.getElementById('shortCount').textContent = e.target.value.length + ' / 160';
+  });
+
+  // ─── Auto slug ────────────────────────────────────────────
+  function autoSlug(auto) {
+    if (!auto) return;
+    const name = document.getElementById('campName').value;
+    document.getElementById('campSlug').value = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  document.getElementById('campName').addEventListener('input', () => autoSlug(true));
+
+  // ─── Tags ──────────────────────────────────────────────────
+  const tags = [];
+  function addTag(e) {
+    if (e.key !== 'Enter') return;
+    const val = e.target.value.trim().toLowerCase();
+    if (!val || tags.includes(val)) { e.target.value = ''; return; }
+    tags.push(val);
+    renderTags();
+    e.target.value = '';
+  }
+  function removeTag(t) {
+    const i = tags.indexOf(t);
+    if (i > -1) tags.splice(i, 1);
+    renderTags();
+  }
+  function renderTags() {
+    const c = document.getElementById('tagContainer');
+    c.innerHTML = tags.map(t => `<span class="tag-chip">${t}<button type="button" onclick="removeTag('${t}')">✕</button></span>`).join('');
+  }
+
+  // ─── Milestone rows ────────────────────────────────────────
+  function addMilestone() {
+    const list = document.getElementById('milestoneList');
+    const row = document.createElement('div');
+    row.className = 'milestone-row bg-cream rounded-2xl border border-ink/8 p-4 relative';
+    row.innerHTML = `
+      <button type="button" onclick="this.closest('.milestone-row').remove()" class="absolute top-3 right-3 w-7 h-7 rounded-full bg-ink/5 hover:bg-ink/10 flex items-center justify-center text-ink/40 hover:text-ink transition">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="grid sm:grid-cols-3 gap-3 mb-3">
+        <div class="sm:col-span-2"><label class="field-label">Milestone title</label><input class="field-input" type="text" placeholder="e.g. Walls complete" /></div>
+        <div><label class="field-label">Target ($)</label><input class="field-input" type="number" placeholder="e.g. 1000000" /></div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="field-label">Expected date</label><input class="field-input" type="date" /></div>
+        <div><label class="field-label">Description</label><input class="field-input" type="text" placeholder="Brief description…" /></div>
+      </div>`;
+    list.appendChild(row);
+  }
+
+  // ─── Doc rows ──────────────────────────────────────────────
+  function addDocRow() {
+    const list = document.getElementById('docList');
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-3 milestone-row';
+    row.innerHTML = `
+      <input class="field-input flex-1" type="text" placeholder="Document title" />
+      <input class="field-input w-48" type="url" placeholder="URL or upload…" />
+      <button type="button" onclick="this.closest('.flex').remove()" class="w-10 h-10 flex-shrink-0 rounded-xl border border-ink/10 flex items-center justify-center text-ink/40 hover:text-ink hover:border-ink/30 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4h6v3M4 7h16"/></svg>
+      </button>`;
+    list.appendChild(row);
+  }
+
+  // ─── File drop ─────────────────────────────────────────────
+  function dragOver(e) { e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); }
+  function dragLeave() { document.getElementById('dropZone').classList.remove('drag-over'); }
+  function handleDrop(e) { e.preventDefault(); dragLeave(); const f = e.dataTransfer.files[0]; if (f) showFile(f); }
+  function handleFile(input) { if (input.files[0]) showFile(input.files[0]); }
+  function showFile(f) {
+    document.getElementById('dropContent').classList.add('hidden');
+    document.getElementById('dropPreview').classList.remove('hidden');
+    document.getElementById('fileName').textContent = f.name;
+  }
+  function clearFile(e) { e.stopPropagation(); document.getElementById('dropContent').classList.remove('hidden'); document.getElementById('dropPreview').classList.add('hidden'); document.getElementById('fileInput').value = ''; }
+
+  // ─── Matching toggle ───────────────────────────────────────
+  function toggleMatching() {
+    const show = document.getElementById('matchToggle').checked;
+    document.getElementById('matchingDetails').classList.toggle('hidden', !show);
+  }
+
+  // ─── Live preview ──────────────────────────────────────────
+  const iconSVGs = {
+    building: '<path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-6h6v6"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>',
+    star: '<path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4.5L6 21l1.5-7.5L2 9h7z"/>',
+    book: '<path d="M12 14l9-5-9-5-9 5 9 5zM12 14l9-5v6L12 20 3 15V9l9 5z"/>',
+    heart: '<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>',
+    cross: '<path d="M12 2v20M6 8h12"/>',
+    people: '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>',
+    leaf: '<path d="M12 22V12M12 12C12 7 17 3 21 3c0 4-2 9-9 9zM12 12c0-5-5-9-9-9 0 4 2 9 9 9z"/>',
+  };
+  const colorBgs = { deep:'#122137', gold:'#C9A24B', sage:'#5B7B6A', ink:'#0F1B2D', rose:'#8B4055' };
+  const iconColors = { deep:'#C9A24B', gold:'#122137', sage:'#FAF6EF', ink:'#C9A24B', rose:'#FAF6EF' };
+
+  function updatePreview() {
+    const name = document.getElementById('campName').value || 'Campaign name…';
+    const desc = document.getElementById('campShort') ? document.getElementById('campShort').value || 'Short description will appear here.' : '';
+    const goal = parseFloat(document.getElementById('campGoal')?.value || 0);
+    const cat = document.getElementById('campCat').selectedOptions[0]?.text || 'Category';
+    const endDate = document.getElementById('campEnd')?.value;
+
+    const selIcon = document.querySelector('input[name="campIcon"]:checked')?.value || 'building';
+    const selColor = document.querySelector('input[name="campColor"]:checked')?.value || 'deep';
+
+    document.getElementById('previewTitle').textContent = name;
+    document.getElementById('previewDesc').textContent = desc;
+    document.getElementById('previewBadge').textContent = cat === 'Select category…' ? 'Category' : cat;
+    document.getElementById('previewIconBg').style.background = colorBgs[selColor];
+    document.getElementById('previewIcon').style.color = iconColors[selColor];
+    document.getElementById('previewIcon').innerHTML = iconSVGs[selIcon] || iconSVGs.building;
+    if (goal > 0) {
+      document.getElementById('previewGoal').textContent = '$' + goal.toLocaleString();
+      document.getElementById('previewRaised').textContent = '$0';
+      document.getElementById('previewPct').textContent = '0%';
+      document.getElementById('previewProgress').style.width = '0%';
+    }
+    document.getElementById('previewEndDate').textContent = endDate ? 'Ends ' + new Date(endDate).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : 'Open-ended';
+
+    // Checklist
+    tick('chk-name', name !== 'Campaign name…' && name.length > 2);
+    tick('chk-cat', cat !== 'Category' && cat !== 'Select category…' && !!document.getElementById('campCat').value);
+    tick('chk-goal', goal > 0);
+    tick('chk-date', !!document.getElementById('campStart')?.value);
+    tick('chk-desc', desc.length > 10 && desc !== 'Short description will appear here.');
+  }
+
+  function tick(id, done) {
+    const li = document.getElementById(id);
+    if (!li) return;
+    const dot = li.querySelector('div');
+    const svg = li.querySelector('svg');
+    const span = li.querySelector('span');
+    if (done) {
+      dot.style.background = '#C9A24B'; dot.style.borderColor = '#C9A24B';
+      svg.classList.remove('hidden'); svg.style.color = '#122137';
+      span.style.color = '#0F1B2D'; span.style.fontWeight = '500';
+    } else {
+      dot.style.background = ''; dot.style.borderColor = '';
+      svg.classList.add('hidden');
+      span.style.color = ''; span.style.fontWeight = '';
+    }
+  }
+
+  document.getElementById('campGoal')?.addEventListener('input', updatePreview);
+  document.getElementById('campEnd')?.addEventListener('input', updatePreview);
+  document.getElementById('campStart')?.addEventListener('input', updatePreview);
+  document.getElementById('campShort')?.addEventListener('input', updatePreview);
+
+  // ─── Review population ─────────────────────────────────────
+  function populateReview() {
+    const fmt = v => v || '—';
+    document.getElementById('rev-name').textContent = fmt(document.getElementById('campName').value);
+    document.getElementById('rev-cat').textContent = fmt(document.getElementById('campCat').selectedOptions[0]?.text);
+    const g = parseFloat(document.getElementById('campGoal')?.value || 0);
+    document.getElementById('rev-goal').textContent = g > 0 ? '$' + g.toLocaleString() : '—';
+    document.getElementById('rev-start').textContent = fmt(document.getElementById('campStart')?.value);
+    const e = document.getElementById('campEnd')?.value;
+    document.getElementById('rev-end').textContent = e || 'Open-ended';
+    document.getElementById('rev-vis').textContent = fmt(document.getElementById('campVisibility')?.selectedOptions[0]?.text);
+    document.getElementById('rev-mgr').textContent = fmt(document.getElementById('campManager')?.selectedOptions[0]?.text === 'Assign to team member…' ? '' : document.getElementById('campManager')?.selectedOptions[0]?.text);
+  }
+
+  // ─── Launch ────────────────────────────────────────────────
+  function launchCampaign() {
+    const tos = document.getElementById('tosCheck').checked;
+    if (!tos) { document.getElementById('tosCheck').closest('div').style.outline = '2px solid #c0392b'; return; }
+    const btn = document.getElementById('launchBtn');
+    btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Launching…';
+    setTimeout(() => {
+      const toast = document.getElementById('successToast');
+      toast.style.transform = 'translateY(0)'; toast.style.opacity = '1';
+      btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Launched!';
+      btn.style.background = '#5B7B6A';
+      setTimeout(() => { toast.style.transform = 'translateY(96px)'; toast.style.opacity = '0'; }, 4000);
+    }, 1800);
+  }
+
+  // init
+  updatePreview();
+</script>
+</body>
+</html>
