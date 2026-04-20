@@ -496,16 +496,14 @@ if ($user) {
         }
         
         .freq-btn {
-            padding: 8px 10px;
-            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            border-radius: var(--radius-lg);
             border: 1px solid rgba(255, 255, 255, 0.15);
             text-align: center;
-            font-size: 11px;
+            font-size: 14px;
             transition: all 0.2s;
             background: rgba(255, 255, 255, 0.05);
             color: rgba(250, 246, 239, 0.8);
-            white-space: nowrap;
-            line-height: 1.2;
         }
         
         .freq-label:hover .freq-btn {
@@ -550,7 +548,7 @@ if ($user) {
         @media (min-width: 1024px) {
             .supplementary-grid {
                 grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) minmax(0, 0.8fr);
-                align-items: stretch;
+                align-items: start;
             }
         }
 
@@ -571,8 +569,7 @@ if ($user) {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
-            margin-bottom: 8px;
-            margin-top: 20px;
+            margin-bottom: 20px;
             gap: 12px;
             flex-wrap: wrap;
         }
@@ -615,7 +612,7 @@ if ($user) {
             gap: 16px;
             background: #FAF6EF;
             border-radius: 20px;
-            padding: 0px;
+            padding: 20px;
             min-height: 100%;
         }
         
@@ -973,7 +970,6 @@ if ($user) {
             border-radius: var(--radius-2xl);
             border: 1px solid rgba(15, 27, 45, 0.1);
             padding: 24px;
-            display:none;
         }
         
         .pledge-header {
@@ -1314,7 +1310,7 @@ if ($user) {
         <!-- HERO GREETING -->
         <section class="hero-greeting">
             <h1 class="welcome-title">
-                Hello, <?php echo $user ? htmlspecialchars($user['first_name']) : 'Friend'; ?>.<br/>
+                Good morning, <?php echo $user ? htmlspecialchars($user['first_name']) : 'Friend'; ?>.<br/>
                 <span class="italic">Thank you for </span><span class="gold">partnering</span><span class="italic"> with us.</span>
             </h1>
             <p class="welcome-subtitle">
@@ -1332,7 +1328,7 @@ if ($user) {
                     <div class="projects-header">
                         <div>
                             <p class="projects-label">Active Projects</p>
-                            
+                            <h3 class="projects-title">Where your seed is working now</h3>
                         </div>
                         <a href="projects.php" class="view-all">
                             View all

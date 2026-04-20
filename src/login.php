@@ -382,7 +382,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display: flex;
             align-items: center;
             margin: 30px 0;
-            display:none;
         }
         
         .divider::before,
@@ -397,11 +396,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 0 15px;
             color: var(--text-muted);
             font-size: 14px;
-            display:none;
         }
         
         .social-login {
-            display: none;
+            display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
@@ -473,10 +471,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         /* Responsive - Mobile */
         @media (max-width: 768px) {
             .login-form-container {
-                padding: 40px;
+                padding: 40px 24px;
                 min-height: 100vh;
                 justify-content: flex-start;
-                
+                padding-top: 80px;
             }
             
             .form-header {
@@ -508,19 +506,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             .social-login {
                 grid-template-columns: 1fr;
-                display:none;
             }
             
             .divider span {
                 font-size: 13px;
-                display:none;
             }
         }
         
         /* Responsive - Small Mobile */
         @media (max-width: 480px) {
             .login-form-container {
-                padding: 40px;
+                padding: 30px 16px;
             }
             
             .form-header h1 {

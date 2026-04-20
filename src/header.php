@@ -46,8 +46,7 @@ $portalSubtitle = $portalSettings['portal_subtitle'];
     height: 64px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 24px;
+    justify-content: space-between;
 }
 
 @media (min-width: 1024px) {
